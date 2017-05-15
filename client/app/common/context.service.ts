@@ -79,6 +79,7 @@ export class ContextService {
               case 'logout':
                 context.loggedIn = false;
                 context.repos = [];
+                context.settings = {};
                 break;
               case 'updateSetting':
                 context.settings = data.response.json();

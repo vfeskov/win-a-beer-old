@@ -1,0 +1,39 @@
+<div *ngIf="context.hasRepos$ | async">
+  <p>How'd you like to get notified?</p>
+  <div class="wrapper">
+    <div class="toggles">
+      <div class="row">
+        <md-slide-toggle [checked]="enabled.email" (change)="toggle('email', $event)">
+          Email
+        </md-slide-toggle>
+      </div>
+      <div class="row">
+        <md-slide-toggle [checked]="enabled.api" (change)="toggle('api', $event)">
+          API
+        </md-slide-toggle>
+      </div>
+    </div>
+    <div class="inputs">
+      <div class="row">
+        <form [formGroup]="forms.email" (ngSubmit)="update('email')" novalidate *ngIf="enabled.email">
+          <md-input-container>
+            <input type="email" mdInput placeholder="Your email address" required formControlName="email" />
+            <md-hint *ngIf="forms.email.dirty">Not saved yet!</md-hint>
+          </md-input-container>
+          <button md-icon-button type="submit" *ngIf="forms.email.dirty"><md-icon>check</md-icon></button>
+          <a md-icon-button (click)="reset('email')" *ngIf="forms.email.dirty"><md-icon>close</md-icon></a>
+        </form>
+      </div>
+      <div class="row">
+        <form [formGroup]="forms.api" (ngSubmit)="update('api')" novalidate *ngIf="enabled.api">
+          <md-input-container>
+            <input type="url" mdInput placeholder="URL to send GET request to" required formControlName="api" />
+            <md-hint *ngIf="forms.api.dirty">Not saved yet!</md-hint>
+          </md-input-container>
+          <button md-icon-button type="submit" *ngIf="forms.api.dirty"><md-icon>check</md-icon></button>
+          <a md-icon-button (click)="reset('api')" *ngIf="forms.api.dirty"><md-icon>close</md-icon></a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

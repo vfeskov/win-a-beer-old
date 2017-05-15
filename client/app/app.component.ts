@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ContextService } from 'app/common';
 
 @Component({
   selector: 'wab-root',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'wab works!';
+  constructor(public context: ContextService) { }
+
+  logout() {
+    this.context.logout();
+  }
 }

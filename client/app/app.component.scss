@@ -1,0 +1,27 @@
+md-toolbar {
+  .spacer {
+    flex: 1;
+  }
+  small {
+    font-family: cursive;
+    font-weight: normal;
+    color: #bbb;
+
+    em {
+      color: #fff;
+      font-style: normal;
+    }
+  }
+}
+
+@media(max-width: 500px) {
+  md-toolbar .desc {
+    display: none;
+  }
+}
+
+.content {
+  margin: 20px;
+  line-height: 40px;
+}
+

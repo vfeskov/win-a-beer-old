@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 16px;
+}
+
+md-input-container md-progress-bar {
+  bottom: -4px;
+  position: absolute !important;
+}
+
+wab-root {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 800px;
+}
+
+a {
+  color: #673ab7;
+  text-decoration: none;
+}

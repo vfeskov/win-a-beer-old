@@ -1,0 +1,29 @@
+<form [formGroup]="form" *ngIf="(context.loggedIn$ | async) === false" (ngSubmit)="submit()" novalidate>
+  <p>Please login or register first.</p>
+  <p>
+    <md-input-container>
+      <input mdInput placeholder="Login" required formControlName="login">
+      <md-error *ngIf="errors.login.required">Required</md-error>
+    </md-input-container>
+  </p>
+  <p>
+    <md-input-container>
+      <input mdInput type="password" placeholder="Password" required formControlName="password">
+      <md-error *ngIf="errors.password.required">Required</md-error>
+    </md-input-container>
+  </p>
+  <p>
+    <md-slide-toggle formControlName="action">
+      Register
+    </md-slide-toggle>
+  </p>
+  <p *ngIf="data.action === ACTION_REGISTER">
+    <md-input-container>
+      <input mdInput type="password" placeholder="Password confirmation" required formControlName="passwordConfirmation">
+      <md-error *ngIf="errors.passwordConfirmation.required">Required</md-error>
+    </md-input-container>
+  </p>
+  <p>
+    <button type="submit" md-raised-button>{{data.action === ACTION_REGISTER ? 'Register' : 'Login'}}</button>
+  </p>
+</form>

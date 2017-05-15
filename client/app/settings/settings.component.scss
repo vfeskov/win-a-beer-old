@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  max-width: 100%;
+  width: 500px;
+}
+
+p {
+  margin: 0;
+}
+
+.wrapper {
+  display: flex;
+
+  .row {
+    height: 60px;
+    line-height: 60px;
+  }
+
+  form {
+    align-items: center;
+    display: flex;
+
+    md-input-container {
+      flex: 1;
+    }
+  }
+
+  .toggles {
+    padding-right: 20px;
+  }
+
+  .inputs {
+    flex: 1;
+  }
+}
+
+md-input-container {
+  width: 100%;
+}

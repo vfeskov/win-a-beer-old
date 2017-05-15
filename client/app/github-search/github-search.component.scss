@@ -1,0 +1,17 @@
+md-input-container {
+  max-width: 100%;
+  width: 500px;
+}
+
+md-option {
+  align-items: center;
+  display: flex;
+
+  .divider {
+    flex: 1;
+  }
+
+  svg {
+    margin: 0 5px;
+  }
+}

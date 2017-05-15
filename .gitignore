@@ -1,9 +1,10 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
+/public
 /tmp
 /out-tsc
+server/bundle*
 
 # dependencies
 /node_modules
@@ -32,6 +33,7 @@
 npm-debug.log
 testem.log
 /typings
+.env
 
 # e2e
 /e2e/*.js
@@ -40,3 +42,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

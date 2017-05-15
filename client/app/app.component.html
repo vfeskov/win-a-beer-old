@@ -1,4 +1,12 @@
-<h1>
-  {{title}}
-</h1>
-<router-outlet></router-outlet>
+<md-toolbar color="primary">
+  <span class="title">WIN A BEER <span class="desc">&middot; <small>It <em>Wi</em>ll <em>N</em>otify <em>Ab</em>out <em>Re</em>l<em>e</em>ases</small></span></span>
+  <span class="spacer"></span>
+  <button md-button (click)="logout()" *ngIf="context.loggedIn$ | async">Logout</button>
+</md-toolbar>
+
+<div class="content">
+  <wab-auth></wab-auth>
+  <wab-github-search></wab-github-search>
+  <wab-repos></wab-repos>
+  <wab-settings></wab-settings>
+</div>

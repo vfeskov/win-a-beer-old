@@ -44,7 +44,7 @@ export function register(server: Server, options, callback) {
       method: 'DELETE',
       path: '/api/logout',
       handler(request, reply) {
-        reply('success').unstate('token');
+        reply('success').unstate('token', COOKIE_OPTIONS as any);
       }
     }]);
 

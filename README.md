@@ -8,7 +8,7 @@ Run `npm run watch-server` in one terminal, `npm run watch-client` in another. N
 
 ## Build
 
-Run `ng run build` to build the project. Run `npm start` to start the server. Navigate to `http://localhost:3000/`.
+Run `npm run build` to build the project. Run `npm start` to start the server. Navigate to `http://localhost:3000/`.
 
 ## License
 

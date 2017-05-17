@@ -8,8 +8,4 @@ import { ContextService } from 'app/common';
 })
 export class AppComponent {
   constructor(public context: ContextService) { }
-
-  logout() {
-    this.context.logout();
-  }
 }

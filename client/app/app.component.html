@@ -1,7 +1,7 @@
 <md-toolbar color="primary">
   <span class="title">WIN A BEER <span class="desc">&middot; <small>It <em>Wi</em>ll <em>N</em>otify <em>Ab</em>out <em>Re</em>l<em>e</em>ases</small></span></span>
   <span class="spacer"></span>
-  <button md-button (click)="logout()" *ngIf="context.loggedIn$ | async">Logout</button>
+  <button md-button (click)="context.logout()" *ngIf="context.loggedIn$ | async">Logout</button>
 </md-toolbar>
 
 <div class="content">

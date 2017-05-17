@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject as $$ } from 'rxjs/Subject';
 import { Observable as $ } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { Http, Response } from '@angular/http';
 const { assign, keys } = Object;
@@ -56,7 +57,6 @@ export class ContextService {
             break;
           case 'httpResponse':
             delete context.httpLoading[data.id];
-            delete context.httpError[data.id];
             switch (data.id) {
               case 'loadUserData':
                 const {settings, repos} = data.response.json();
@@ -88,7 +88,7 @@ export class ContextService {
             break;
           case 'httpLoading':
             delete context.httpRequest[data.id];
-            context.httpLoading[data.id] = true;
+            context.httpLoading[data.id] = data.subscription;
             break;
           case 'httpError':
             delete context.httpLoading[data.id];
@@ -99,6 +99,18 @@ export class ContextService {
             }
             break;
         }
+
+        const requestIds = keys(context.httpRequest);
+        if (!requestIds.length) { return context; }
+
+        requestIds.forEach(id => {
+          if (context.httpLoading[id]) {
+            context.httpLoading[id].unsubscribe();
+            delete context.httpLoading[id];
+          }
+          if (context.httpError[id]) { delete context.httpError[id]; }
+        });
+
         return context;
       }, {} as Context)
       .publish();
@@ -120,14 +132,15 @@ export class ContextService {
       .mergeMap(requests =>
         $.of(...keys(requests).map(id => assign({id}, requests[id])))
       )
-      .mergeMap(({id, endpoint, method, data = null}) =>
-        $.of({name: 'httpLoading', data: {id}})
-          .merge(
-            http[method](`/api/${endpoint}`, data)
-              .map(response => ({name: 'httpResponse', data: {id, response}}))
-              .catch(response => $.of({name: 'httpError', data: {id, response}}))
-          )
-      )
+      .mergeMap(({id, endpoint, method, data = null}) => {
+        const httpResult$$ = new $$();
+        const subscription: Subscription = http[method](`/api/${endpoint}`, data)
+          .map(response => ({name: 'httpResponse', data: {id, response}}))
+          .catch(response => $.of({name: 'httpError', data: {id, response}}))
+          .subscribe(httpResult$$);
+        return $.of({name: 'httpLoading', data: {id, subscription}})
+          .merge(httpResult$$)
+      })
       .subscribe(this.event$$);
 
     this.loadUserData();
@@ -211,7 +224,7 @@ export class Context {
     }
   };
   httpLoading: {
-    [id: string]: boolean
+    [id: string]: Subscription
   };
   httpError: {
     [id: string]: boolean

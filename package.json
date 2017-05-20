@@ -28,7 +28,6 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
-    "aws-sdk": "^2.50.0",
     "bcrypt": "^1.0.2",
     "boom": "^4.3.1",
     "core-js": "^2.4.1",
@@ -37,6 +36,7 @@
     "hapi-auth-jwt2": "^7.2.4",
     "inert": "^4.2.0",
     "rxjs": "^5.1.0",
+    "rxjs-aws-sdk": "^1.0.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

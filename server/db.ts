@@ -1,6 +1,6 @@
 process.env.AWS_ACCESS_KEY_ID = process.env.WAB_AWS_ACCESS_KEY_ID;
 process.env.AWS_SECRET_ACCESS_KEY = process.env.WAB_AWS_SECRET_ACCESS_KEY;
-import { SimpleDB } from 'aws-sdk';
+import { create, flattenAttrs } from 'rxjs-aws-sdk/RxSimpleDB';
 import { Observable as $ } from 'rxjs/Observable';
 
 export {
@@ -14,16 +14,10 @@ export {
 const {assign} = Object;
 
 const DomainName = process.env.WAB_SDB_DOMAIN_NAME;
-const origSimpledb = new SimpleDB({
-  region    : process.env.WAB_SDB_REGION,
-  endpoint  : process.env.WAB_SDB_ENDPOINT
+const simpleDb = create({
+  region: process.env.WAB_SDB_REGION,
+  endpoint: process.env.WAB_SDB_ENDPOINT
 });
-
-const simpleDb = ['getAttributes', 'putAttributes', 'select']
-  .reduce((result, method) =>
-    assign(result, {[method]: params => rxifySimpleDBMethod(method, params)}),
-    {}
-  ) as RxSimpleDB;
 
 function loadUser(login) {
   return simpleDb.getAttributes({DomainName, ItemName: login})
@@ -77,27 +71,4 @@ function saveSettings(login, settings) {
       {Name: 'settings', Value: JSON.stringify(settings), Replace: true}
     ]})
     .mapTo(settings);
-}
-
-function rxifySimpleDBMethod(methodName, params) {
-  return new $(subscriber => {
-    const request = origSimpledb[methodName](params, (err, data) => {
-      if (err) { return subscriber.error(err); }
-      subscriber.next(data);
-      subscriber.complete();
-    });
-    return () => request.abort();
-  });
-}
-
-function flattenAttrs(attrs: SimpleDB.Attribute[]) {
-  return attrs.reduce((res, attr) =>
-    assign(res, {[attr.Name]: attr.Value}),
-  {} as any);
-}
-
-export interface RxSimpleDB {
-  getAttributes(params?: SimpleDB.Types.GetAttributesRequest): $<SimpleDB.GetAttributesResult>;
-  putAttributes(params?: SimpleDB.Types.PutAttributesRequest): $<{}>;
-  select(params?: SimpleDB.Types.SelectRequest): $<SimpleDB.Types.SelectResult>;
 }

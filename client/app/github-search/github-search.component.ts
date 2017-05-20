@@ -34,9 +34,4 @@ export class GithubSearchComponent {
       this.repoSuggestions$.mapTo(false)
     );
   }
-
-  addRepo(repo: Repo) {
-    this.context.addRepo(repo);
-  }
-
 }

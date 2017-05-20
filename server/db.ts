@@ -19,7 +19,7 @@ const simpleDb = create({
   endpoint: process.env.WAB_SDB_ENDPOINT
 });
 
-function loadUser(login) {
+function loadUser(login: string) {
   return simpleDb.getAttributes({DomainName, ItemName: login})
     .map(({Attributes}) => {
       if (!Attributes) {
@@ -29,41 +29,41 @@ function loadUser(login) {
     });
 }
 
-function addUser(login, passwordEncrypted) {
+function addUser(login: string, passwordEncrypted: string) {
   return simpleDb.putAttributes({
       DomainName,
       ItemName: login,
       Attributes: [
         {Name: 'passwordEncrypted', Value: passwordEncrypted},
-        {Name: 'repos', Value: '[]'}
+        {Name: 'repos', Value: ''}
       ]
     });
 }
 
-function loadUserData(login) {
+function loadUserData(login: string) {
   return simpleDb.getAttributes({DomainName, ItemName: login, AttributeNames: ['repos', 'settings']})
     .map(({Attributes}) => {
       if (!Attributes) { throw new Error('User not found'); }
       const {settings, repos} = flattenAttrs(Attributes);
       return {
         settings: settings ? JSON.parse(settings) : {},
-        repos: repos ? JSON.parse(repos) : []
+        repos: repos ? repos.split(',') : []
       };
     });
 }
 
-function saveRepos(login, repos) {
-  repos = repos.map(({id, full_name}) => ({id, full_name}));
+function saveRepos(login: string, repos: string[]) {
+  const Value = repos.map(r => r.replace(',', '')).join(',');
   return simpleDb.putAttributes({
     DomainName,
     ItemName: login,
     Attributes: [
-      {Name: 'repos', Value: JSON.stringify(repos), Replace: true}
+      {Name: 'repos', Value, Replace: true}
     ]})
     .mapTo(repos);
 }
 
-function saveSettings(login, settings) {
+function saveSettings(login: string, settings: {email?: string, api?: string}) {
   return simpleDb.putAttributes({
     DomainName,
     ItemName: login,

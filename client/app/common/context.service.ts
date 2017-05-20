@@ -10,7 +10,7 @@ const { assign, keys } = Object;
 export class ContextService {
   context$: ConnectableObservable<Context>;
   loggedIn$: $<boolean>;
-  repos$: $<Repo[]>;
+  repos$: $<string[]>;
   hasRepos$: $<boolean>;
   settings$: $<any>;
   private event$$: $$<Event> = new $$();
@@ -37,12 +37,12 @@ export class ContextService {
             context.httpRequest.loadUserData = {endpoint: 'userData', method: 'get'};
             break;
           case 'addRepo':
-            if (context.repos.some(repo => repo.id === data.id)) { break; }
-            const newRepos = context.repos.concat(data);
+            if (context.repos.indexOf(data.repo) > -1) { break; }
+            const newRepos = context.repos.concat(data.repo);
             context.httpRequest.addRepo = {endpoint: 'repos', method: 'put', data: newRepos};
             break;
           case 'removeRepo':
-            const updatedRepos = context.repos.filter(repo => repo.id !== data.id)
+            const updatedRepos = context.repos.filter(repo => repo !== data.repo)
             if (updatedRepos.length === context.repos.length) { break; }
             context.httpRequest.removeRepo = {endpoint: 'repos', method: 'put', data: updatedRepos};
             break;
@@ -119,7 +119,7 @@ export class ContextService {
       .filter(ctx => ctx.loggedIn !== null)
       .pluck('loggedIn');
     this.repos$ = this.context$.pluck('repos');
-    this.hasRepos$ = this.repos$.map((repos: Repo[]) => !!repos.length);
+    this.hasRepos$ = this.repos$.map((repos: string[]) => !!repos.length);
     this.settings$ = this.context$
       .filter(({httpLoading, httpRequest}) => !httpLoading.updateSetting && !httpRequest.updateSetting)
       .pluck('settings');
@@ -146,12 +146,12 @@ export class ContextService {
     this.loadUserData();
   }
 
-  addRepo(repo: Repo) {
-    this.event$$.next({name: 'addRepo', data: repo});
+  addRepo(repo: string) {
+    this.event$$.next({name: 'addRepo', data: {repo}});
   }
 
-  removeRepo(repo: Repo) {
-    this.event$$.next({name: 'removeRepo', data: repo});
+  removeRepo(repo: string) {
+    this.event$$.next({name: 'removeRepo', data: {repo}});
   }
 
   loadUserData() {
@@ -189,7 +189,7 @@ function copyContext(context) {
   if (!Array.isArray(context.repos)) {
     context.repos = [];
   } else {
-    context.repos = context.repos.map(repo => assign({}, repo));
+    context.repos = context.repos.slice();
   }
   if (!context.settings) {
     context.settings = {};
@@ -212,7 +212,7 @@ export class Event {
 export class Context {
   loggedIn: boolean;
   login: string;
-  repos: Repo[];
+  repos: string[];
   settings: {
     [name: string]: string
   };
@@ -231,10 +231,3 @@ export class Context {
   };
 }
 
-export class Repo {
-  id: number;
-  full_name: string;
-  stargazers_count?: number;
-  watchers_count?: number;
-  forks_count?: number;
-}

@@ -20,8 +20,8 @@ export function register(server: Server, options, callback) {
       method: 'PUT',
       path: '/api/repos',
       handler({payload, auth}, reply) {
-        if (!payload || !Array.isArray(payload)) {
-          return reply(badData('repos required as an array'))
+        if (!payload || !Array.isArray(payload) || payload.some(r => typeof r !== 'string')) {
+          return reply(badData('repos required as an array of strings'))
         }
         const {login} = auth.credentials;
         saveRepos(login, payload)
@@ -35,11 +35,12 @@ export function register(server: Server, options, callback) {
       method: 'PUT',
       path: '/api/settings',
       handler({payload, auth}, reply) {
-        if (!payload) {
+        const {api, email} = payload;
+        if (!payload || (email && typeof email !== 'string') || (api && typeof api !== 'string')) {
           return reply(badData('payload required'))
         }
         const {login} = auth.credentials;
-        saveSettings(login, payload)
+        saveSettings(login, {api, email})
           .catch(error => {
             console.error(error);
             return $.of(badImplementation())

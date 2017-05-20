@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ContextService, Repo } from 'app/common';
+import { ContextService } from 'app/common';
 import { Observable as $ } from 'rxjs/Observable';
 
 @Component({

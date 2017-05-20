@@ -8,7 +8,7 @@ const ses = createSES({
 });
 
 export function sendEmail(email$) {
-  email$
+  return email$
     .map(({email, username, repo, tag}) => ({
       username,
       email,
@@ -33,7 +33,7 @@ export function sendEmail(email$) {
       .catch(error => $.of({error}))
       .map(r => assign(r, {username, subject, email})) as $<{error?: any, username: string, email: string, subject: string}>
     )
-    .subscribe(({email, username, subject, error}) => {
+    .do(({email, username, subject, error}) => {
       if (error) {
         console.error(`Email: Failed to send email ${subject} to ${email} for user ${username}`, error);
       } else {

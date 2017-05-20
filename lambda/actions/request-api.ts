@@ -3,7 +3,7 @@ import { Observable as $ } from '../rxjs';
 const { assign } = Object;
 
 export function requestApi(api$) {
-  api$
+  return api$
     .map(({api, username, repo, tag}) => ({
       username,
       url: api
@@ -14,7 +14,7 @@ export function requestApi(api$) {
       .catch(error => $.of({error}))
       .map(r => assign(r, {username, url})) as $<{error?: any, username: string, url: string}>
     )
-    .subscribe(({error, username, url}) => {
+    .do(({error, username, url}) => {
       if (error) {
         console.error(`API: Failed to request ${url} for user ${username}`, error);
       } else {

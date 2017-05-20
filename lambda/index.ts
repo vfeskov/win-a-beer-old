@@ -5,15 +5,24 @@ import { Observable as $ } from './rxjs';
 import { getStreams } from './streams';
 import { requestApi, sendEmail, updateSDB } from './actions';
 
-const simpleDb = createRxSimpleDB({
-  region: process.env.SDB_REGION,
-  endpoint: process.env.SDB_ENDPOINT
-});
+export function handler(event, context, callback) {
+  const simpleDb = createRxSimpleDB({
+    region: process.env.SDB_REGION,
+    endpoint: process.env.SDB_ENDPOINT
+  });
 
-const DomainName = process.env.SDB_DOMAIN_NAME;
+  const DomainName = process.env.SDB_DOMAIN_NAME;
 
-const { api$, email$, markAlerted$ } = getStreams(simpleDb, DomainName);
+  const { api$, email$, markAlerted$ } = getStreams(simpleDb, DomainName);
 
-requestApi(api$);
-sendEmail(email$);
-updateSDB(simpleDb, DomainName, markAlerted$);
+  $.merge(
+    requestApi(api$),
+    sendEmail(email$),
+    updateSDB(simpleDb, DomainName, markAlerted$)
+  )
+  .last()
+  .subscribe(
+    () => callback(null),
+    error => callback(error)
+  );
+};

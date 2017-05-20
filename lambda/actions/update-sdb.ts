@@ -2,7 +2,7 @@ import { Observable as $ } from '../rxjs';
 const { assign } = Object;
 
 export function updateSDB(simpleDb, DomainName, markAlerted$) {
-  markAlerted$
+  return markAlerted$
     .mergeMap(({username, alerted}) =>
       simpleDb.putAttributes({
         DomainName,
@@ -14,7 +14,7 @@ export function updateSDB(simpleDb, DomainName, markAlerted$) {
         .catch(error => $.of({error}))
         .map(r => assign(r, {username}))  as $<{error?: any, username: string}>
     )
-    .subscribe(({error, username}) => {
+    .do(({error, username}) => {
       if (error) {
         console.error(`SimpleDB: Failed to update ${username}`, error);
       } else {

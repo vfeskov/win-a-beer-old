@@ -91,10 +91,7 @@ export function getStreams(simpleDb: RxSimpleDBInstance, DomainName: string) {
       action === 'alert' && !!settings.api
     )
     .map(({settings, username, repo, tag}) => ({
-      username,
-      url: settings.api
-        .replace('[[repo]]', encodeURIComponent(repo))
-        .replace('[[tag]]', encodeURIComponent(tag))
+      api: settings.api, username, repo, tag
     }));
 
   const markAlerted$ = action$

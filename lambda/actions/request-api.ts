@@ -3,7 +3,14 @@ import { Observable as $ } from '../rxjs';
 const { assign } = Object;
 
 export function requestApi(api$) {
-  api$.mergeMap(({username, url}) => RxHttpRequest.get(url)
+  api$
+    .map(({api, username, repo, tag}) => ({
+      username,
+      url: api
+        .replace('[[repo]]', encodeURIComponent(repo))
+        .replace('[[tag]]', encodeURIComponent(tag))
+    }))
+    .mergeMap(({username, url}) => RxHttpRequest.get(url)
       .catch(error => $.of({error}))
       .map(r => assign(r, {username, url})) as $<{error?: any, username: string, url: string}>
     )

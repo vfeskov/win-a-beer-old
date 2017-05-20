@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 server/bundle*
+lambda/index.js
 
 # dependencies
 /node_modules

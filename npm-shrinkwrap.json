@@ -429,6 +429,38 @@
       "resolved": "https://registry.npmjs.org/awesome-typescript-loader/-/awesome-typescript-loader-3.1.3.tgz",
       "dev": true
     },
+    "aws-sdk": {
+      "version": "2.54.0",
+      "from": "aws-sdk@>=2.54.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.54.0.tgz",
+      "dependencies": {
+        "buffer": {
+          "version": "5.0.6",
+          "from": "buffer@5.0.6",
+          "resolved": "https://registry.npmjs.org/buffer/-/buffer-5.0.6.tgz"
+        },
+        "crypto-browserify": {
+          "version": "1.0.9",
+          "from": "crypto-browserify@1.0.9",
+          "resolved": "https://registry.npmjs.org/crypto-browserify/-/crypto-browserify-1.0.9.tgz"
+        },
+        "punycode": {
+          "version": "1.3.2",
+          "from": "punycode@1.3.2",
+          "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.3.2.tgz"
+        },
+        "sax": {
+          "version": "1.2.1",
+          "from": "sax@1.2.1",
+          "resolved": "https://registry.npmjs.org/sax/-/sax-1.2.1.tgz"
+        },
+        "url": {
+          "version": "0.10.3",
+          "from": "url@0.10.3",
+          "resolved": "https://registry.npmjs.org/url/-/url-0.10.3.tgz"
+        }
+      }
+    },
     "aws-sign2": {
       "version": "0.6.0",
       "from": "aws-sign2@>=0.6.0 <0.7.0",
@@ -5713,41 +5745,9 @@
       "resolved": "https://registry.npmjs.org/rxjs/-/rxjs-5.4.0.tgz"
     },
     "rxjs-aws-sdk": {
-      "version": "1.0.0",
-      "from": "rxjs-aws-sdk@latest",
-      "resolved": "https://registry.npmjs.org/rxjs-aws-sdk/-/rxjs-aws-sdk-1.0.0.tgz",
-      "dependencies": {
-        "aws-sdk": {
-          "version": "2.54.0",
-          "from": "aws-sdk@>=2.54.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.54.0.tgz"
-        },
-        "buffer": {
-          "version": "5.0.6",
-          "from": "buffer@5.0.6",
-          "resolved": "https://registry.npmjs.org/buffer/-/buffer-5.0.6.tgz"
-        },
-        "crypto-browserify": {
-          "version": "1.0.9",
-          "from": "crypto-browserify@1.0.9",
-          "resolved": "https://registry.npmjs.org/crypto-browserify/-/crypto-browserify-1.0.9.tgz"
-        },
-        "punycode": {
-          "version": "1.3.2",
-          "from": "punycode@1.3.2",
-          "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.3.2.tgz"
-        },
-        "sax": {
-          "version": "1.2.1",
-          "from": "sax@1.2.1",
-          "resolved": "https://registry.npmjs.org/sax/-/sax-1.2.1.tgz"
-        },
-        "url": {
-          "version": "0.10.3",
-          "from": "url@0.10.3",
-          "resolved": "https://registry.npmjs.org/url/-/url-0.10.3.tgz"
-        }
-      }
+      "version": "1.1.0",
+      "from": "rxjs-aws-sdk@1.1.0",
+      "resolved": "https://registry.npmjs.org/rxjs-aws-sdk/-/rxjs-aws-sdk-1.1.0.tgz"
     },
     "safe-buffer": {
       "version": "5.0.1",

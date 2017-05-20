@@ -14,10 +14,10 @@ export function getStreams(simpleDb: RxSimpleDBInstance, DomainName: string) {
       assign({username: Name}, flattenAttrs(Attributes)) as UserRaw
     )
     .map(item => assign(item, {repos: item.repos.trim()}))
-    .filter(({repos, settings}) => !!repos.trim() && !!settings)
+    .filter(({repos, settings}) => !!repos && !!settings)
     .map(({username, repos, settings, alerted}): User => ({
       username: username,
-      repos: repos.trim().split(','),
+      repos: repos.split(','),
       settings: parseForceObject(settings),
       alerted: parseForceObject(alerted)
     }))

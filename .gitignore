@@ -4,7 +4,7 @@
 /public
 /tmp
 /out-tsc
-server/bundle*
+server/index.js
 lambda/index.js
 
 # dependencies

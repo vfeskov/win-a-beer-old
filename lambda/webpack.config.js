@@ -5,6 +5,7 @@ const plugins = process.env.PROD ? [new UglifyJSPlugin()] : [];
 const config = {
   target: 'node',
   entry: './index',
+  context: path.resolve(__dirname),
   output: {
     filename: 'index.js',
     path: __dirname,
@@ -12,7 +13,10 @@ const config = {
   },
   module: {
     loaders: [
-      {test: /\.ts$/, loader: 'awesome-typescript-loader'}
+      {test: /\.ts$/, use: [{
+        loader: 'awesome-typescript-loader',
+        options: {configFileName: path.resolve(__dirname, 'tsconfig.json')}
+      }]}
     ]
   },
   resolve: {

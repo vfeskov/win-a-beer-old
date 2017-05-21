@@ -6,7 +6,7 @@ const config = {
   entry: './index',
   context: path.resolve(__dirname),
   output: {
-    filename: 'bundle.js',
+    filename: 'index.js',
     path: __dirname
   },
   module: {

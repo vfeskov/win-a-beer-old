@@ -3,16 +3,17 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "npm run build-client && npm run build-server",
+    "build-app": "npm run build-client && npm run build-server",
     "build-client": "ng build -prod -aot",
     "build-server": "webpack --config server/webpack.config.js",
+    "build-lambda": "webpack --config lambda/webpack.config.js",
     "docker": "docker build -t vfeskov/win-a-beer . && docker push vfeskov/win-a-beer",
     "e2e": "ng e2e",
     "lint": "ng lint",
     "ng": "ng",
-    "start": "node server/bundle.js",
+    "start": "node server/index.js",
     "test": "ng test",
-    "watch-server": "concurrently \"webpack --config server/webpack.config.js --watch\" \"nodemon --watch server/bundle.js server/bundle.js\"",
+    "watch-server": "concurrently \"webpack --config server/webpack.config.js --watch\" \"nodemon --watch server/index.js server/index.js\"",
     "watch-client": "ng serve --proxy-config proxy.conf.json -o"
   },
   "private": true,
@@ -34,6 +35,8 @@
     "hapi": "^16.1.1",
     "hapi-auth-jwt2": "^7.2.4",
     "inert": "^4.2.0",
+    "jsonwebtoken": "^7.4.1",
+    "rx-http-request": "^1.2.0",
     "rxjs": "^5.1.0",
     "rxjs-aws-sdk": "^1.1.0",
     "zone.js": "^0.8.4"
@@ -66,6 +69,8 @@
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
     "typescript": "~2.2.0",
+    "uglify-js": "https://github.com/mishoo/UglifyJS2#278577f3cb75e72320564805ee91be63e5f9c806",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack-node-externals": "^1.6.0"
   }
 }

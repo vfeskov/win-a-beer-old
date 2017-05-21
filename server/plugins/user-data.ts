@@ -43,7 +43,6 @@ export function register(server: Server, options, callback) {
         }
         const {login} = auth.credentials;
         saveSettings(login, {api, email})
-          .mapTo('')
           .catch(error => {
             console.error(error);
             return $.of(badImplementation())

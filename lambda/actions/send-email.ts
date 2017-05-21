@@ -25,7 +25,7 @@ export function sendEmail(actionRequired$: $<ActionRequired>) {
       username,
       email,
       subject: `New GitHub Tag: ${repo} ${tag}`,
-      body: `Hi, ${username}! :)\n` +
+      body: `Hi, ${username}! :)\n\n` +
         `We\'re just letting you know that they assigned a new tag to a repo you wanted us to monitor: https://github.com/${repo}/releases/tag/${tag}\n\n` +
         `Have a great day!\n\n` +
         `If you wish to stop receiving such emails click: ${unsubscribeUrl}\n`

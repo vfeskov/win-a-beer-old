@@ -47,7 +47,7 @@ export function getActionRequired(simpleDb: RxSimpleDBInstance, DomainName: stri
       RxHttpRequest
         .get(`https://api.github.com/repos/${repo}/tags`, {
           headers: {
-            'User-Agent': 'vfeskov/win-a-beer'
+            'User-Agent': process.env.GITHUB_API_USER_AGENT
           }
         })
         .map(response => ({

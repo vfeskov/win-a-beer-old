@@ -1,6 +1,7 @@
 import { RxHttpRequest } from 'rx-http-request';
 import { Observable as $ } from '../rxjs';
 import { ActionRequired } from '../action-required';
+import { getUnsubscribeUrl } from './unsubscribe';
 const { assign } = Object;
 
 export function requestApi(actionRequired$: $<ActionRequired>) {
@@ -17,7 +18,12 @@ export function requestApi(actionRequired$: $<ActionRequired>) {
         .replace('[[repo]]', encodeURIComponent(repo))
         .replace('[[tag]]', encodeURIComponent(tag))
     }))
-    .mergeMap(({username, url}) => RxHttpRequest.get(url)
+    .mergeMap(({username, url}) =>
+      RxHttpRequest.get(url, {
+        headers: {
+          'Unsubscribe-Url': getUnsubscribeUrl(username, 'api')
+        }
+      })
       .catch(error => $.of({error}))
       .map(r => assign(r, {username, url})) as $<{error?: any, username: string, url: string}>
     )

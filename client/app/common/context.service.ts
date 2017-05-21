@@ -146,8 +146,6 @@ export class ContextService {
           .merge(httpResult$$)
       })
       .subscribe(this.event$$);
-
-    this.loadUserData();
   }
 
   addRepo(repo: string) {

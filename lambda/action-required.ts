@@ -61,6 +61,7 @@ export function getActionRequired(simpleDb: RxSimpleDBInstance, DomainName: stri
         }) as $<ResponseData>
     )
     .filter(({error}) => !error)
+    .filter(({tags}) => !!tags && !!tags.length)
     .mergeMap(({tags, repo, userData}) =>
       $.of(...userData.map(_userData => assign(_userData, {repo, tags})))
     )

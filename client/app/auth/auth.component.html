@@ -1,6 +1,6 @@
+<p>Subscribe to new GitHub releases and tags by email or a URL request.</p>
+<p>Please login or register first.</p>
 <form [formGroup]="form" *ngIf="(context.loggedIn$ | async) === false" (ngSubmit)="submit()" novalidate>
-  <p>Subscribe to new GitHub releases and tags by email or a URL request.</p>
-  <p>Please login or register first.</p>
   <p>
     <md-input-container>
       <input mdInput placeholder="Login" required formControlName="login">

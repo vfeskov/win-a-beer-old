@@ -29,6 +29,7 @@
           <md-input-container>
             <input type="url" mdInput placeholder="URL to send GET request to" required formControlName="api" />
             <md-hint *ngIf="forms.api.dirty">Not saved yet!</md-hint>
+            <md-hint *ngIf="!forms.api.dirty">[[repo]] &amp; [[tag]] will be replaced</md-hint>
           </md-input-container>
           <button md-icon-button type="submit" *ngIf="forms.api.dirty"><md-icon>check</md-icon></button>
           <a md-icon-button (click)="reset('api')" *ngIf="forms.api.dirty"><md-icon>close</md-icon></a>

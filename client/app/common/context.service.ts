@@ -55,8 +55,12 @@ export class ContextService {
             }
             context.httpRequest.updateSetting = {endpoint: 'settings', method: 'put', data: settings};
             break;
+          case 'unsubscribeUser':
+            context.httpRequest.unsubscribeUser = {endpoint: 'unsubscribe', method: 'put', data};
+            break;
           case 'httpResponse':
             delete context.httpLoading[data.id];
+            context.httpResponse[data.id] = data.response;
             switch (data.id) {
               case 'loadUserData':
                 const {settings, repos} = data.response.json();
@@ -92,7 +96,7 @@ export class ContextService {
             break;
           case 'httpError':
             delete context.httpLoading[data.id];
-            context.httpError = data.response;
+            context.httpError[data.id] = data.response;
             if (data.response.status === 401) {
               context.loggedIn = false;
               context.repos = [];
@@ -170,6 +174,20 @@ export class ContextService {
     this.event$$.next({name: 'logout'});
   }
 
+  unsubscribeUser(target: string, lambdajwt: string) {
+    console.log(target, lambdajwt);
+    this.event$$.next({name: 'unsubscribeUser', data: {target, lambdajwt}});
+    return this.context$
+      .filter(({httpError, httpResponse}) =>
+        httpError.unsubscribeUser || httpResponse.unsubscribeUser
+      )
+      .mergeMap(({httpError, httpResponse}) => {
+        const error = httpError.unsubscribeUser;
+        const response = httpResponse.unsubscribeUser;
+        return error ? $.throw(error) : $.of(response);
+      });
+  }
+
   updateSetting(setting, value) {
     this.event$$.next({name: 'updateSetting', data: {setting, value}});
   }
@@ -226,8 +244,11 @@ export class Context {
   httpLoading: {
     [id: string]: Subscription
   };
+  httpResponse: {
+    [id: string]: any
+  }
   httpError: {
-    [id: string]: boolean
+    [id: string]: any
   };
 }
 

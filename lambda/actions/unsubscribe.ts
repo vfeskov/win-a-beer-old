@@ -4,9 +4,9 @@ const { APP_URL } = process.env;
 
 export function getUnsubscribeUrl(username: string, target: string) {
   const token = JWT.sign(
-    { username, action: 'unsubscribe', target },
+    { login: username, target },
     JWT_RSA_PRIVATE_KEY,
     { algorithm: 'RS256' }
   );
-  return `${APP_URL}/unsubscribe?lambdajwt=${token}`;
+  return `${APP_URL}/unsubscribe/${target}/${token}`;
 }

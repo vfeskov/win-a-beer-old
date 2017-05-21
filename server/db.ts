@@ -9,6 +9,7 @@ export {
   loadUserData,
   saveRepos,
   saveSettings,
+  loadSettings
 };
 
 const {assign} = Object;
@@ -71,4 +72,14 @@ function saveSettings(login: string, settings: {email?: string, api?: string}) {
       {Name: 'settings', Value: JSON.stringify(settings), Replace: true}
     ]})
     .mapTo(settings);
+}
+
+function loadSettings(login: string) {
+  return simpleDb.getAttributes({DomainName, ItemName: login, AttributeNames: ['settings']})
+    .mergeMap(({Attributes}) => {
+      if (!Attributes) { return $.throw('user not found'); }
+      const result = assign({login}, flattenAttrs(Attributes));
+      result.settings = result.settings ? JSON.parse(result.settings) : {};
+      return $.of(result);
+    });
 }

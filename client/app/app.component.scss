@@ -1,7 +1,12 @@
 md-toolbar {
+  a {
+    color: white;
+  }
+
   .spacer {
     flex: 1;
   }
+
   small {
     font-family: cursive;
     font-weight: normal;

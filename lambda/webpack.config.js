@@ -5,7 +5,8 @@ const config = {
   entry: './index',
   output: {
     filename: 'index.js',
-    path: __dirname
+    path: __dirname,
+    libraryTarget: 'commonjs2'
   },
   module: {
     loaders: [

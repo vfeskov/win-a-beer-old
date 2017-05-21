@@ -24,4 +24,3 @@ export function handler(event, context, callback) {
     error => callback(error)
   );
 };
-

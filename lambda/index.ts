@@ -14,13 +14,14 @@ export function handler(event, context, callback) {
   const actionRequired$ = getActionRequired(simpleDb, simpleDbDomain);
 
   $.merge(
+    $.of('at least one event has to be merged'),
     requestApi(actionRequired$),
     sendEmail(actionRequired$),
     updateSDB(simpleDb, simpleDbDomain, actionRequired$)
   )
   .last()
   .subscribe(
-    () => callback(null),
+    () => callback(),
     error => callback(error)
   );
 };

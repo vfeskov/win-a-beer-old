@@ -3,7 +3,7 @@ import { Observable as $ } from 'rxjs/Observable';
 import { badImplementation, badData } from 'boom';
 import { loadUserData, saveRepos, saveSettings, loadSettings } from '../db';
 import * as JWT from 'jsonwebtoken';
-const LAMBDA_JWT_RSA_PUBLIC_KEY = process.env.WAB_LAMBDA_JWT_RSA_PUBLIC_KEY.replace(/\\n/, '\n');
+const LAMBDA_JWT_RSA_PUBLIC_KEY = process.env.WAB_LAMBDA_JWT_RSA_PUBLIC_KEY.replace(/\\n/g, '\n');
 
 export function register(server: Server, options, callback) {
   server.route([{

@@ -11,11 +11,18 @@ export function register(server: Server, options, callback) {
       handler: {
         directory: {
           path: 'public',
-          listing: true,
+          listing: false,
           index: true
         }
       }
     });
+    server.ext('onPostHandler', (request, reply) => {
+      const response = request.response;
+      if (response.isBoom && (response as any).output.statusCode === 404) {
+        return reply.file('public/index.html');
+      }
+      return reply.continue();
+    })
     callback();
   });
 }

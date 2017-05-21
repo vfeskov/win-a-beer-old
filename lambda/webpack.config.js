@@ -1,4 +1,6 @@
 const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const plugins = process.env.PROD ? [new UglifyJSPlugin()] : [];
 
 const config = {
   target: 'node',
@@ -15,7 +17,8 @@ const config = {
   },
   resolve: {
     extensions: ['.ts', '.js', '.json']
-  }
+  },
+  plugins
 };
 
 module.exports = config;

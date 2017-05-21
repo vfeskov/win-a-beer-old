@@ -1,8 +1,22 @@
 import { Observable as $ } from '../rxjs';
-const { assign } = Object;
+import { ActionRequired, Alerted } from '../action-required';
+const { assign, keys } = Object;
 
-export function updateSDB(simpleDb, DomainName, markAlerted$) {
-  return markAlerted$
+export function updateSDB(simpleDb, DomainName, actionRequired$: $<ActionRequired>) {
+  return actionRequired$
+    .reduce((newAlerted, action: ActionRequired) => {
+      const {repo, username, tag, alerted} = action;
+      if (!newAlerted[username]) {
+        newAlerted[username] = alerted;
+      }
+      newAlerted[username][repo] = tag;
+      return newAlerted;
+    }, {} as {[username: string]: Alerted})
+    .mergeMap(newAlerted =>
+      $.of(...keys(newAlerted).map(username => ({
+        username, alerted: newAlerted[username]
+      })))
+    )
     .mergeMap(({username, alerted}) =>
       simpleDb.putAttributes({
         DomainName,

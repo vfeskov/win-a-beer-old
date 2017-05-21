@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 config();
 import { create as createRxSimpleDB } from 'rxjs-aws-sdk/RxSimpleDB';
 import { Observable as $ } from './rxjs';
-import { getStreams } from './streams';
+import { getActionRequired } from './action-required';
 import { requestApi, sendEmail, updateSDB } from './actions';
 
 export function handler(event, context, callback) {
@@ -13,12 +13,12 @@ export function handler(event, context, callback) {
 
   const DomainName = process.env.SDB_DOMAIN_NAME;
 
-  const { api$, email$, markAlerted$ } = getStreams(simpleDb, DomainName);
+  const actionRequired$ = getActionRequired(simpleDb, DomainName);
 
   $.merge(
-    requestApi(api$),
-    sendEmail(email$),
-    updateSDB(simpleDb, DomainName, markAlerted$)
+    requestApi(actionRequired$),
+    sendEmail(actionRequired$),
+    updateSDB(simpleDb, DomainName, actionRequired$)
   )
   .last()
   .subscribe(

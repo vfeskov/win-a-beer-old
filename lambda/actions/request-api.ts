@@ -1,9 +1,16 @@
 import { RxHttpRequest } from 'rx-http-request';
 import { Observable as $ } from '../rxjs';
+import { ActionRequired } from '../action-required';
 const { assign } = Object;
 
-export function requestApi(api$) {
-  return api$
+export function requestApi(actionRequired$: $<ActionRequired>) {
+  return actionRequired$
+    .filter(({action, settings}) =>
+      action === 'alert' && !!settings.api
+    )
+    .map(({settings, username, repo, tag}) => ({
+      api: settings.api, username, repo, tag
+    }))
     .map(({api, username, repo, tag}) => ({
       username,
       url: api

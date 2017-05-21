@@ -1,5 +1,6 @@
 import { create as createSES } from 'rxjs-aws-sdk/RxSES';
 import { Observable as $ } from '../rxjs';
+import { ActionRequired } from '../action-required';
 const { assign } = Object;
 
 const ses = createSES({
@@ -7,8 +8,14 @@ const ses = createSES({
   region: process.env.SES_REGION
 });
 
-export function sendEmail(email$) {
-  return email$
+export function sendEmail(actionRequired$: $<ActionRequired>) {
+  return actionRequired$
+    .filter(({action, settings}) =>
+      action === 'alert' && !!settings.email
+    )
+    .map(({settings, username, repo, tag}) => (
+      { email: settings.email, username, repo, tag }
+    ))
     .map(({email, username, repo, tag}) => ({
       username,
       email,

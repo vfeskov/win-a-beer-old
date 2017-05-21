@@ -4,8 +4,8 @@ import { RxHttpRequest } from 'rx-http-request';
 const { assign, keys } = Object;
 const { isArray } = Array;
 
-export function getStreams(simpleDb: RxSimpleDBInstance, DomainName: string) {
-  const action$ = simpleDb.select({
+export function getActionRequired(simpleDb: RxSimpleDBInstance, DomainName: string): $<ActionRequired> {
+  return simpleDb.select({
       SelectExpression: `select repos, settings, alerted from \`${DomainName}\` where repos is not null`
     })
     .filter(({Items}) => Items && !!Items.length)
@@ -77,44 +77,6 @@ export function getStreams(simpleDb: RxSimpleDBInstance, DomainName: string) {
     })
     .filter(({action}) => !!action)
     .share();
-
-  const email$ = action$
-    .filter(({action, settings}) =>
-      action === 'alert' && !!settings.email
-    )
-    .map(({settings, username, repo, tag}) => (
-      { email: settings.email, username, repo, tag }
-    ));
-
-  const api$ = action$
-    .filter(({action, settings}) =>
-      action === 'alert' && !!settings.api
-    )
-    .map(({settings, username, repo, tag}) => ({
-      api: settings.api, username, repo, tag
-    }));
-
-  const markAlerted$ = action$
-    .reduce((newAlerted, action: Action) => {
-      const {repo, username, tag, alerted} = action;
-      if (!newAlerted[username]) {
-        newAlerted[username] = alerted;
-      }
-      newAlerted[username][repo] = tag;
-      return newAlerted;
-    }, {} as {[username: string]: Alerted})
-    .mergeMap(newAlerted =>
-      $.of(...keys(newAlerted).map(username => ({
-        username, alerted: newAlerted[username]
-      })))
-    );
-
-  return {
-    action$,
-    email$,
-    api$,
-    markAlerted$
-  };
 }
 
 function parseForceObject(json) {
@@ -173,7 +135,7 @@ export interface Alerted {
   [repo: string]: string
 }
 
-export interface Action {
+export interface ActionRequired {
   action: string
   tag: string
   repo: string

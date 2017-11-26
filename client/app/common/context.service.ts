@@ -173,7 +173,6 @@ export class ContextService {
   }
 
   unsubscribeUser(target: string, lambdajwt: string) {
-    console.log(target, lambdajwt);
     this.event$$.next({name: 'unsubscribeUser', data: {target, lambdajwt}});
     return this.context$
       .filter(({httpError, httpResponse}) =>

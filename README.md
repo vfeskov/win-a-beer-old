@@ -12,4 +12,4 @@ Run `npm run build` to build the project. Run `npm start` to start the server. N
 
 ## License
 
-See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
+See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT)
